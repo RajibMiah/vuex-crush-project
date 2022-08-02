@@ -1,5 +1,5 @@
 <template>
-  <main class="layout layout--3">
+  <main class="profile-page layout layout--3">
     <div class="container">
       <!-- Topics Start -->
       <div class="activities__container">
@@ -27,59 +27,67 @@
         </div>
       </div>
 
-      <!-- Topics End -->
-
       <!-- Room List Start -->
       <div class="roomList">
-        <div class="mobile-menu">
-          <form action="#" method="GET" class="header__search">
-            <label>
-              <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-              >
-                <title>search</title>
-                <path
-                  d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z"
-                ></path>
-              </svg>
-              <input name="q" placeholder="Search for posts" />
-            </label>
-          </form>
-          <div class="mobile-menuItems">
-            <a class="btn btn--main btn--pill" href="{% url 'topics' %}"
-              >Browse Topics</a
-            >
-            <a class="btn btn--main btn--pill" href="{% url 'activity' %}"
-              >Recent Activities</a
-            >
+        <div class="profile">
+          <div class="profile__avatar">
+            <div class="avatar avatar--large active">
+              <img
+                id="profile-img"
+                src="../assets/images/user.png"
+                class="online"
+                alt=""
+              />
+            </div>
           </div>
-        </div>
+          <div class="profile__info">
+            <div class="profile_info_container">
+              <div>
+                <div>
+                  <div>
+                    <h3>root</h3>
+                  </div>
+                </div>
+                <div>
+                  <div class="profile-user-followers">
+                    <h4>@root 10 followers</h4>
+                  </div>
 
-        <div class="roomList__header">
-          <div>
-            <h2>Study Rooms</h2>
-            <p>100 Rooms available</p>
-          </div>
+                  <div class="btn btn--main btn--pill" id="followers">
+                    <a class="follow-span">Follow</a>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <a href="#">
+                  <div class="header__user">
+                    <button type="button" class="icon-button">
+                      <span class="material-symbols-outlined">chat</span>
+                    </button>
+                  </div>
+                </a>
+                <a href="#" target="_blank">
+                  <div class="header__user">
+                    <button type="button" class="icon-button">
+                      <span class="material-symbols-outlined">
+                        storefront
+                      </span>
+                    </button>
+                  </div>
+                </a>
+              </div>
+              <!-- <p>@{{ user.username }}</p> -->
+            </div>
 
-          <a class="btn btn--main" href="{% url 'create-room' %}">
-            <svg
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
+            <!-- <a href="#" class="btn btn--main btn--pill"
+              >Edit Profile</a
             >
-              <title>add</title>
-              <path
-                d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
-              ></path>
-            </svg>
-            Create Room
-          </a>
+           -->
+          </div>
+          <div class="profile__about">
+            <h3>About</h3>
+            <p class="profile__bio">user bio info</p>
+          </div>
         </div>
         <!-- --------ROOM FEED COMPONENT--------- -->
         <div class="roomListRoom">
@@ -138,7 +146,10 @@
           <div class="activities">
             <div class="activities__box">
               <div class="activities__boxHeader roomListRoom__header">
-                <router-link to="/profile" class="roomListRoom__author">
+                <a
+                  href="{% url 'user-profile' message.user.id %}"
+                  class="roomListRoom__author"
+                >
                   <div class="avatar avatar--small">
                     <img src="../assets/images/user.png" />
                   </div>
@@ -146,7 +157,7 @@
                     @root
                     <span>10 minit ago</span>
                   </p>
-                </router-link>
+                </a>
                 <div class="roomListRoom__actions">
                   <a href="{% url 'delete-message' message.id %}">
                     <svg
@@ -181,8 +192,12 @@
 
 <script>
 export default {
-  name: "home",
+  name: "Profile",
+  data: function () {
+    return {};
+  },
+  methods: {},
+  computed: {},
 };
 </script>
-
 <style scoped></style>
