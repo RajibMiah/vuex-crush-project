@@ -9,12 +9,14 @@
           <li>
             <a href="#" class="active"
               >All
-              <span>10</span>
+              <span>{{ total_room }}</span>
             </a>
           </li>
 
-          <li>
-            <a href="#">JAVASCRIPT<span>1</span> </a>
+          <li v-for="topic in topic_data_set" :key="topic.id">
+            <a href="#"
+              >{{ topic.name }}<span>{{ topic.total_rooms }}</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -25,8 +27,34 @@
   </div>
 </template>
 <script>
+import axios from "../axios";
 export default {
   name: "TopicComponent",
+  data() {
+    return {
+      total_room: 0,
+      topic_data_set: [],
+    };
+  },
+
+  // Methods are functions that mutate state and trigger updates.
+  // They can be bound as event listeners in templates.
+  methods: {
+    fetchTopic() {
+      axios.get("topic/").then((response) => {
+        // console.log("Network response", response);
+        this.topic_data_set = response.data;
+        this.total_room = response.data.length;
+      });
+    },
+  },
+
+  // Lifecycle hooks are called at different stages
+  // of a component's lifecycle.
+  // This function will be called when the component is mounted.
+  async mounted() {
+    await this.fetchTopic();
+  },
 };
 </script>
 <style></style>
