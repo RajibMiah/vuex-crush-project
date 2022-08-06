@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Counter from '../components/Counter.vue';
-import Employees from '../components/Employees.vue';
-import UserList from '../components/UserList.vue';
 import HomeView from "../views/HomeView.vue";
+import PageNotFound from '../views/PageNotFound.vue';
 import Profile from '../views/Profile.vue';
-
+import RoomView from '../views/RoomView.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,24 +12,19 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path:'/profile',
+      path:'/profile/:uuid',
       name:"profile",
       component:Profile
     },
     {
-      path:'/counter',
-      name:"counter",
-      component:Counter
+      path:'/room/:roomid',
+      name:'room',
+      component:RoomView
     },
     {
-      path:'/employees',
-      name:'employees',
-      component:Employees  
-    },
-    {
-      path:'/users',
-      name:"UserList",
-      component:UserList
+      path: '/:pathMatch(.*)*',
+      name:"PageNotFound",
+      component:PageNotFound
     }
   ],
 });

@@ -121,6 +121,7 @@ a {
 
 .btn:hover {
   opacity: 0.9;
+  background-color: var(--color-main) !important;
 }
 
 .btn--dark {

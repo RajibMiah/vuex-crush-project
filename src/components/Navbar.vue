@@ -36,7 +36,12 @@
 
         <div class="menu__container">
           <div class="header__user">
-            <router-link to="/profile">
+            <router-link
+              :to="{
+                name: 'profile',
+                params: { uuid: 'uiijasdjif-0021sf-2121 ' },
+              }"
+            >
               <div class="avatar avatar--medium active">
                 <img
                   id="profile-img"
