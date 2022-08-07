@@ -1,7 +1,8 @@
 <template>
+  <!-- <pre>{{ data }}</pre> -->
   <div class="roomListRoom">
     <router-link
-      :to="{ name: 'room', params: { roomid: 1 } }"
+      :to="{ name: 'room', params: { roomid: data.id } }"
       class="room-list-link"
     >
       <div>
@@ -9,21 +10,21 @@
           <router-link
             :to="{
               name: 'profile',
-              params: { uuid: 'uiijasdjif-0021sf-2121 ' },
+              params: { uuid: data.room_host.uuid },
             }"
             class="roomListRoom__author"
           >
             <div class="avatar avatar--small">
               <img src="../assets/images/user.png" />
             </div>
-            <span>@ROOT</span>
+            <span>@{{ data.room_host.name }}</span>
           </router-link>
           <div class="roomListRoom__actions">
-            <span>20 mint ago</span>
+            <span>{{ data.created }} ago</span>
           </div>
         </div>
         <div class="roomListRoom__content">
-          <a href="#">JAVASCRIPT</a>
+          <a href="#">{{ data.name }}</a>
         </div>
       </div>
     </router-link>
@@ -52,13 +53,30 @@
         </svg>
         100 Joined
       </a>
-      <p class="roomListRoom__topic">javascript</p>
+      <p class="roomListRoom__topic">{{ data.topic }}</p>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "FeedComponent",
+  // Properties returned from data() become reactive state
+  // and will be exposed on `this`.
+  props: ["data"],
+  data() {
+    return {
+      count: 0,
+    };
+  },
+
+  // Methods are functions that mutate state and trigger updates.
+  // They can be bound as event listeners in templates.
+  methods: {},
+
+  // Lifecycle hooks are called at different stages
+  // of a component's lifecycle.
+  // This function will be called when the component is mounted.
+  async mounted() {},
 };
 </script>
 <style scoped>

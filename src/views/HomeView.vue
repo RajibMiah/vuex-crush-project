@@ -37,7 +37,7 @@
         <div class="roomList__header">
           <div>
             <h2>Study Rooms</h2>
-            <p>100 Rooms available</p>
+            <p>{{ available_study_room }} Rooms available</p>
           </div>
 
           <a
@@ -102,18 +102,22 @@
             </div>
           </div>
         </div>
-
-        <FeedComponentVue />
+        <div v-for="feeditem in feed_room_data" :key="feeditem.id">
+          <FeedComponentVue :data="feeditem" />
+        </div>
       </div>
 
       <!-- Activities Start -->
-      <activity-component-vue />
+      <div>
+        <activity-component-vue />
+      </div>
       <!-- Activities End -->
     </div>
   </main>
 </template>
 
 <script>
+import axios from "../axios";
 import ActivityComponentVue from "../components/ActivityComponent.vue";
 import FeedComponentVue from "../components/FeedComponent.vue";
 import TopicComponentVue from "../components/TopicComponent.vue";
@@ -123,6 +127,31 @@ export default {
     TopicComponentVue,
     FeedComponentVue,
     ActivityComponentVue,
+  },
+  data() {
+    return {
+      available_study_room: 0,
+      feed_room_data: [],
+    };
+  },
+
+  // Methods are functions that mutate state and trigger updates.
+  // They can be bound as event listeners in templates.
+  methods: {
+    featchFeedCardData() {
+      axios.get("room/").then((res) => {
+        console.log("response", res);
+        this.feed_room_data = res.data;
+        this.available_study_room = res.data.length;
+      });
+    },
+  },
+
+  // Lifecycle hooks are called at different stages
+  // of a component's lifecycle.
+  // This function will be called when the component is mounted.
+  async mounted() {
+    await this.featchFeedCardData();
   },
 };
 </script>

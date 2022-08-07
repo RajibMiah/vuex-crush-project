@@ -1,5 +1,7 @@
 <template>
-  <main class="profile-page layout layout--2">
+  <div v-if="is_loading"><h1>loading....</h1></div>
+  <main class="profile-page layout layout--2" v-else>
+    <!-- <pre>{{ room_details }} {{ is_loading }}</pre> -->
     <div class="container">
       <!-- Room Start -->
       <div class="room">
@@ -23,7 +25,7 @@
           </div>
 
           <div class="room__topRight">
-            <a href="#">
+            <a>
               <svg
                 enable-background="new 0 0 24 24"
                 height="32"
@@ -70,22 +72,28 @@
         <div class="room__box scroll">
           <div class="room__header scroll">
             <div class="room__info">
-              <h3>Paython</h3>
-              <span>1 hour ago</span>
+              <h3>{{ room_details.name }}</h3>
+              <span> {{ room_details.created }} ago</span>
             </div>
             <div class="room__hosted">
               <p>Hosted By</p>
-              <a href="#" class="room__author">
+              <router-link
+                :to="{
+                  name: 'profile',
+                  params: { uuid: 'uiijasdjif-0021sf-2121 ' },
+                }"
+                class="room__author"
+              >
                 <div class="avatar avatar--small">
                   <img src="../assets/images/user.png" />
                 </div>
-                <span>@Admin</span>
-              </a>
+                <span>@{{ room_details?.room_host?.name }}</span>
+              </router-link>
             </div>
             <div class="room__details" style="color: black">
-              this is a description
+              {{ room_details.description }}
             </div>
-            <span class="room__topics">Javascript</span>
+            <span class="room__topics">{{ room_details.topic }}</span>
           </div>
 
           <div class="room__conversation">
@@ -146,27 +154,39 @@
       <div class="participants">
         <h3 class="participants__top">
           Participants
-          <span>(10 Joined)</span>
+          <span>({{ room_paticipants.length }} Joined)</span>
         </h3>
-        <div class="participants__list scroll" id="participants_list">
-          <a href="#" class="participant">
+        <!-- <pre>{{ room_paticipants }}</pre> -->
+        <div
+          v-for="participant in room_paticipants"
+          :key="participant.id"
+          class="participants__list scroll"
+          id="participants_list"
+        >
+          <router-link
+            :to="{
+              name: 'profile',
+              params: { uuid: participant.uuid },
+            }"
+            class="participant"
+          >
             <div class="avatar avatar--medium">
               <img src="../assets/images/user.png" />
             </div>
             <p>
-              Root
-              <span>@root</span>
+              {{ participant.name }}
+              <span>@{{ participant.name }}</span>
             </p>
-          </a>
+          </router-link>
         </div>
-        <div class="col-12 col-md-4">
+        <!-- <div class="col-12 col-md-4">
           <label for="onlineUsers">Online users</label>
           <select
             multiple
             class="form-control"
             id="onlineUsersSelector"
           ></select>
-        </div>
+        </div> -->
       </div>
 
       <!--  End -->
@@ -175,8 +195,37 @@
   </main>
 </template>
 <script>
+import axios from "../axios";
 export default {
   name: "RoomView",
+  data() {
+    return {
+      is_loading: false,
+      room_details: [],
+      room_paticipants: [],
+    };
+  },
+
+  // Methods are functions that mutate state and trigger updates.
+  // They can be bound as event listeners in templates.
+  methods: {
+    fetchRoomDetails() {
+      this.is_loading = true;
+      axios.get(`room/${this.$route.params.roomid}`).then((res) => {
+        console.log("picked room details data", res.data);
+        this.room_details = res.data;
+        this.room_paticipants = res.data.participants;
+        this.is_loading = false;
+      });
+    },
+  },
+
+  // Lifecycle hooks are called at different stages
+  // of a component's lifecycle.
+  // This function will be called when the component is mounted.
+  async mounted() {
+    await this.fetchRoomDetails();
+  },
 };
 </script>
 <style></style>
